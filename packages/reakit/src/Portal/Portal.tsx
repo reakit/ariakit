@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { useIsomorphicEffect } from "reakit-utils/useIsomorphicEffect";
 import { canUseDOM } from "reakit-utils/canUseDOM";
 
 export type PortalProps = {
@@ -23,23 +22,18 @@ export function Portal({ children }: PortalProps) {
   // otherwise it's document.body
   // https://github.com/reakit/reakit/issues/513
   const context = React.useContext(PortalContext) || getBodyElement();
-  const [hostNode] = React.useState(() => {
-    if (canUseDOM) {
-      const element = document.createElement("div");
-      element.className = Portal.__className;
-      return element;
-    }
-    // ssr
-    return null;
-  });
+  const [hostNode, setHostNode] = React.useState<HTMLDivElement | null>(null);
 
-  useIsomorphicEffect(() => {
-    if (!hostNode || !context) return undefined;
-    context.appendChild(hostNode);
+  React.useEffect(() => {
+    if (!context) return undefined;
+    const element = document.createElement("div");
+    element.className = Portal.__className;
+    setHostNode(element);
+    context.appendChild(element);
     return () => {
-      context.removeChild(hostNode);
+      context.removeChild(element);
     };
-  }, [hostNode, context]);
+  }, [context]);
 
   if (hostNode) {
     return ReactDOM.createPortal(
@@ -49,7 +43,6 @@ export function Portal({ children }: PortalProps) {
       hostNode
     );
   }
-
   // ssr
   return null;
 }

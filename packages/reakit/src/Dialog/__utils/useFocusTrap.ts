@@ -34,8 +34,8 @@ export function useFocusTrap(
 
     if (!portal) {
       warning(
-        true,
-        "Can't trap focus within modal dialog because either `ref` wasn't passed to component or the component wasn't rendered within a portal",
+        !!portalRef.current,
+        "Can't trap focus within modal dialog because `ref` wasn't passed to component.",
         "See https://reakit.io/docs/dialog"
       );
       return undefined;
@@ -61,7 +61,7 @@ export function useFocusTrap(
       if (beforeElement.current) removeFromDOM(beforeElement.current);
       if (afterElement.current) removeFromDOM(afterElement.current);
     };
-  }, [portalRef, shouldTrap]);
+  }, [dialogRef, portalRef, shouldTrap]);
 
   // Focus trap
   React.useEffect(() => {
