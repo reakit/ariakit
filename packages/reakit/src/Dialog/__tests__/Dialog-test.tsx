@@ -44,12 +44,6 @@ test("render visible", () => {
     <body>
       <div />
       <div
-        aria-hidden="true"
-        class="__reakit-focus-trap"
-        style="position: fixed;"
-        tabindex="0"
-      />
-      <div
         class="__reakit-portal"
       >
         <div
@@ -63,12 +57,6 @@ test("render visible", () => {
           dialog
         </div>
       </div>
-      <div
-        aria-hidden="true"
-        class="__reakit-focus-trap"
-        style="position: fixed;"
-        tabindex="0"
-      />
     </body>
   `);
 });
