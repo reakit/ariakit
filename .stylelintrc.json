@@ -1,5 +1,6 @@
 {
   "extends": "stylelint-config-standard",
+  "ignoreFiles": ["packages/ariakit-tailwind/**", "site/**"],
   "rules": {
     "no-duplicate-at-import-rules": null,
     "no-descending-specificity": null,

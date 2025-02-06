@@ -5,6 +5,10 @@
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
+  "tailwindCSS.experimental.configFile": {
+    "site/src/styles/global.css": "site/**/*",
+    "tailwind.config.cjs": "**/*"
+  },
   "tailwindCSS.experimental.classRegex": [
     "tw`([^`]*)`",
     ["(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]"]
@@ -18,7 +22,7 @@
     "source.organizeImports.biome": "explicit"
   },
   "[css]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[json]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -33,6 +37,9 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[astro]": {
     "editor.defaultFormatter": "biomejs.biome"
   }
 }

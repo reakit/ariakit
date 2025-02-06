@@ -1,0 +1,5 @@
+coverage
+tsconfig.json
+*.log
+*.config.js
+*.lock

@@ -9,6 +9,7 @@
     "dev-package-json": "node scripts/build/package-json-dev.js",
     "dev": "conc -r 'npm:dev-package-json' 'npm:dev -w website'",
     "dev-lite": "cross-env DISABLE_SHIKI=true npm run dev",
+    "dev-site": "npm run dev -w site",
     "generate-images": "playwright test -u -c generate-images.config.ts",
     "test": "vitest",
     "test-solid": "ARIAKIT_TEST_LOADER=solid vitest",
@@ -46,7 +47,7 @@
     "lint": "biome check .",
     "lint-fix": "biome check --write .",
     "lint-css": "stylelint '**/*.css' --ignore-path .gitignore",
-    "tsc": "conc -r 'tsc' 'tsc -p website' 'tsc -p tsconfig.solid.json'",
+    "tsc": "conc -r 'tsc' 'tsc -p website' 'tsc -p site' 'tsc -p tsconfig.solid.json'",
     "tsc-clean": "tsc --build --clean",
     "build": "lerna exec --scope @ariakit/* -- npm run build",
     "build-website": "npm run build --prefix website",
@@ -56,7 +57,7 @@
     "prepare": "husky",
     "postinstall": "patch-package"
   },
-  "workspaces": ["packages/*", "examples", "guide", "website"],
+  "workspaces": ["packages/*", "examples", "guide", "website", "site"],
   "lerna": {
     "version": "independent"
   },
@@ -65,8 +66,7 @@
       "npm run clean -ws --if-present",
       "biome check --no-errors-on-unmatched --write"
     ],
-    "*.{js,ts,tsx,json}": "biome check --no-errors-on-unmatched --write",
-    "*.css": "stylelint --fix"
+    "*.{js,ts,tsx,json}": "biome check --no-errors-on-unmatched --write"
   },
   "overrides": {
     "@wordpress/components": {
@@ -90,6 +90,7 @@
     "@stackblitz/sdk": "1.11.0",
     "@stripe/react-stripe-js": "3.1.1",
     "@stripe/stripe-js": "5.5.0",
+    "@tailwindcss/vite": "4.0.3",
     "@tanstack/react-query": "5.63.0",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
@@ -111,6 +112,7 @@
     "@vitest/browser": "2.1.8",
     "@vitest/coverage-c8": "0.33.0",
     "@wordpress/components": "29.1.1",
+    "astro": "5.2.3",
     "autoprefixer": "10.4.20",
     "babel-plugin-transform-rewrite-imports": "1.5.3",
     "babylon": "6.18.0",

@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@plugin "./plugin.js";
+
+@theme {
+  --color-base: #0e0e11;
+  /* --color-base: #ddd; */
+  /* --color-base: #e0e0e0; */
+  /* --color-base: #efefef; */
+  /* --color-base: #fff; */
+  --color-brand: #007acc;
+  --color-accent: #ec4899;
+  --color-accent-500: #ec4899;
+
+  --layer-contrast: 6;
+  --layer-highlight-threshold: 0.92;
+  --layer-hover-threshold: 0.5;
+}
+
+@theme inline {
+  --layer-contrast-up: var(--layer-contrast);
+  --layer-contrast-down: var(--layer-contrast);
+
+  --layer-highlight-contrast: var(--layer-contrast);
+  --layer-highlight-contrast-up: var(--layer-contrast-up);
+  --layer-highlight-contrast-down: var(--layer-contrast-down);
+
+  --layer-hover-contrast: var(--layer-contrast);
+  --layer-hover-contrast-up: var(--layer-contrast-up);
+  --layer-hover-contrast-down: var(--layer-contrast-down);
+}

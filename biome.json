@@ -7,7 +7,13 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["website/.next/**", "website/.pages/**", "**/*.css"]
+    "ignore": [
+      "website/.next/**",
+      "website/.pages/**",
+      "site/.astro/**",
+      "website/**/*.css",
+      "examples/**/*.css"
+    ]
   },
   "organizeImports": {
     "enabled": true

@@ -44,13 +44,13 @@
   },
   "exports": {
     ".": "./src/index.ts",
-    "./visually-hidden": "./src/visually-hidden.ts",
-    "./separator": "./src/separator.ts",
-    "./role": "./src/role.ts",
-    "./heading": "./src/heading.ts",
-    "./group": "./src/group.ts",
-    "./focus-trap": "./src/focus-trap.ts",
     "./as": "./src/as.ts",
+    "./focus-trap": "./src/focus-trap.ts",
+    "./group": "./src/group.ts",
+    "./heading": "./src/heading.ts",
+    "./role": "./src/role.ts",
+    "./separator": "./src/separator.ts",
+    "./visually-hidden": "./src/visually-hidden.ts",
     "./package.json": "./package.json"
   }
 }

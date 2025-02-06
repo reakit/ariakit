@@ -37,6 +37,7 @@
     "node_modules",
     "coverage",
     "website",
+    "site",
     "packages/*solid*",
     "examples/**/*.solid.tsx"
   ]
