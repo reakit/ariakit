@@ -1,7 +1,7 @@
-diff --git a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js
-index a537ba7..d1cb0fd 100644
---- a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js
-+++ b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.dev.js
+diff --git a/dist/apply-release-plan.cjs.dev.js b/dist/apply-release-plan.cjs.dev.js
+index a537ba7a436f047f4c372117d7851932bc4c6bce..d1cb0fd47fdd99d33dff8e090ff842b8644e8562 100644
+--- a/dist/apply-release-plan.cjs.dev.js
++++ b/dist/apply-release-plan.cjs.dev.js
 @@ -244,6 +244,15 @@ async function getChangelogEntry(release, releases, changesets, changelogFuncs,
    });
    let relevantChangesets = changesets.filter(cs => relevantChangesetIds.has(cs.id));
@@ -18,10 +18,10 @@ index a537ba7..d1cb0fd 100644
    return [`## ${release.newVersion}`, await generateChangesForVersionTypeMarkdown(changelogLines, "major"), await generateChangesForVersionTypeMarkdown(changelogLines, "minor"), await generateChangesForVersionTypeMarkdown(changelogLines, "patch")].filter(line => line).join("\n");
  }
  
-diff --git a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js
-index 41b2127..b3a99b2 100644
---- a/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js
-+++ b/node_modules/@changesets/apply-release-plan/dist/apply-release-plan.cjs.prod.js
+diff --git a/dist/apply-release-plan.cjs.prod.js b/dist/apply-release-plan.cjs.prod.js
+index 41b2127a84124c660742df42eacc80e9d44b3c8c..d011dc88e65f2659c52a291d3c14e639a4cdbd4e 100644
+--- a/dist/apply-release-plan.cjs.prod.js
++++ b/dist/apply-release-plan.cjs.prod.js
 @@ -136,8 +136,17 @@ async function getChangelogEntry(release, releases, changesets, changelogFuncs,
      }));
    }));

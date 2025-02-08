@@ -1,7 +1,7 @@
 {
-  "installCommand": "npm install",
-  "buildCommand": "npm run build-website",
-  "devCommand": "npm run dev -- --port $PORT",
+  "installCommand": "bun install",
+  "buildCommand": "bun run build-website",
+  "devCommand": "bun run dev -- --port $PORT",
   "outputDirectory": "website/.next",
   "ignoreCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" == \"changeset-release/main\" ]; then exit 0; else exit 1; fi"
 }

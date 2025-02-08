@@ -25,8 +25,8 @@
   },
   "scripts": {
     "lint": "biome check .",
-    "build": "node ../../scripts/build/build.js",
-    "clean": "node ../../scripts/build/clean.js"
+    "build": "bun ../../scripts/build/build.js",
+    "clean": "bun ../../scripts/build/clean.js"
   },
   "keywords": ["ariakit", "react", "a11y", "ui", "toolkit", "components"],
   "dependencies": {

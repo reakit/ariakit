@@ -1,7 +1,7 @@
-diff --git a/node_modules/vite-plugin-solid/dist/esm/index.mjs b/node_modules/vite-plugin-solid/dist/esm/index.mjs
-index e065926..ee9e2bd 100644
---- a/node_modules/vite-plugin-solid/dist/esm/index.mjs
-+++ b/node_modules/vite-plugin-solid/dist/esm/index.mjs
+diff --git a/dist/esm/index.mjs b/dist/esm/index.mjs
+index e065926b3da86406660aba987cb8226af9f0f8fd..ee9e2bda075353d919e689a3077f22ec6ca9cb5c 100644
+--- a/dist/esm/index.mjs
++++ b/dist/esm/index.mjs
 @@ -67,21 +67,21 @@ function solidPlugin(options = {}) {
  
        // fix for bundling dev in production

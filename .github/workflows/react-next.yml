@@ -18,17 +18,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
-      - name: Cache npm
+      - name: Cache Bun
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          path: ~/.bun/install/cache
+          key: bun-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -37,11 +37,11 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
   react-next:
     name: Test React Next (${{ matrix.shard }})
@@ -56,10 +56,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -68,17 +68,22 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
 
       - name: Print version of react@next
-        run: npm view react@next && npm view react-dom@next
+        run: npm view react@next && npm view react-dom@next # TODO: replace with Bun?
 
       - name: Install React@next
-        run: npm run reactnext
+        run: bun run reactnext
 
       - name: Test
-        run: npm test -- --shard ${{ matrix.shard }}
+        run: bun run test -- --shard ${{ matrix.shard }}
