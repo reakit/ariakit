@@ -145,7 +145,7 @@
     "monaco-editor-webpack-plugin": "7.1.0",
     "monaco-textmate": "3.0.1",
     "monaco-vscode-textmate-theme-converter": "0.1.7",
-    "next": "14.2.23",
+    "next": "15.1.7",
     "null-loader": "4.0.1",
     "onigasm": "2.2.5",
     "open-cli": "8.0.0",
