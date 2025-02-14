@@ -1,4 +1,5 @@
-import { type JSX, useContext } from "solid-js";
+import { useContext } from "solid-js";
+import type { ReactNode } from "../utils/__port.ts";
 import { HeadingContext } from "./heading-context.tsx";
 import type { HeadingLevels } from "./utils.ts";
 
@@ -20,11 +21,11 @@ import type { HeadingLevels } from "./utils.ts";
  */
 export function HeadingLevel(props: HeadingLevelProps) {
   const contextLevel = useContext(HeadingContext);
-  const nextLevel = () =>
-    Math.max(
-      Math.min(props.level || (contextLevel?.() ?? 0) + 1, 6),
-      1,
-    ) as HeadingLevels;
+  // biome-ignore format: [port]
+  const nextLevel = () => Math.max(
+    Math.min(props.level || contextLevel() + 1, 6),
+    1,
+  ) as HeadingLevels;
   return (
     <HeadingContext.Provider value={nextLevel}>
       {props.children}
@@ -38,5 +39,5 @@ export interface HeadingLevelProps {
    * context.
    */
   level?: HeadingLevels;
-  children?: JSX.Element;
+  children?: ReactNode;
 }

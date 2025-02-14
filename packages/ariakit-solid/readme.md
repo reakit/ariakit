@@ -34,6 +34,9 @@
 
 <br>
 
+> [!CAUTION]
+> Ariakit Solid is currently under development and is not ready for production use. See [#4117](https://github.com/ariakit/ariakit/issues/4117) for more information.
+
 ## Installation
 
 npm:
@@ -84,7 +87,7 @@ render(() => <App />, document.getElementById("root")!);
 - [Diego Haz](https://x.com/diegohaz)
 - [Ben Rodri](https://x.com/benrodrs)
 
-## Ariakit Solid maintainers
+## Ariakit Solid Maintainers
 
 - [Dani Guardiola](https://x.com/daniguardio_la)
 

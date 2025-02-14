@@ -1,6 +1,11 @@
-import { FocusTrap } from "@ariakit/react";
+import { FocusTrap, FocusTrapRegion } from "@ariakit/react";
+import { useState } from "react";
 
 export default function Fixture() {
+  const [regionEnabled, setRegionEnabled] = useState(false);
+  function toggleRegion() {
+    setRegionEnabled((value) => !value);
+  }
   return (
     <>
       <div role="group" aria-label="trap">
@@ -20,6 +25,19 @@ export default function Fixture() {
         </FocusTrap>
         <button>Skip</button>
         <button id="focus-target">Focus target</button>
+      </div>
+
+      <div role="group" aria-label="region">
+        <button>Start</button>
+        <button onClick={toggleRegion}>Toggle region</button>
+        <button>Before</button>
+        <FocusTrapRegion enabled={regionEnabled}>
+          <button>Trapped 1</button>
+          <button disabled>Trapped 2</button>
+          <button>Trapped 3</button>
+          <button>Trapped 4</button>
+        </FocusTrapRegion>
+        <button>After</button>
       </div>
     </>
   );

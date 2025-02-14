@@ -1,33 +1,15 @@
-import { type MaybeAccessor, access } from "@solid-primitives/utils";
-import { type Accessor, type ValidComponent, createUniqueId } from "solid-js";
+import type { MutableRefObject } from "react";
 
 /**
- * Generates a unique ID.
+ * Sets both a function and "object" ref.
  */
-export function createId(
-  defaultId?: MaybeAccessor<string | undefined>,
-): Accessor<string> {
-  const id = createUniqueId();
-  return () => access(defaultId) ?? id;
-}
-
-/**
- * Returns the tag name by parsing an element.
- * @example
- * function Component(props) {
- *   const [ref, setRef] = createSignal();
- *   const tagName = extractTagName(ref, "button"); // () => "div"
- *   return <div ref={setRef} {...props} />;
- * }
- */
-export function extractTagName(
-  element?: MaybeAccessor<HTMLElement | undefined>,
-  fallback?: ValidComponent,
+export function setRef<T>(
+  ref: ((element: T) => void) | MutableRefObject<T> | undefined,
+  value: T,
 ) {
-  return () => {
-    return (
-      access(element)?.tagName.toLowerCase() ??
-      (typeof fallback === "string" ? fallback : undefined)
-    );
-  };
+  if (typeof ref === "function") {
+    ref(value);
+  } else if (ref) {
+    ref.current = value;
+  }
 }

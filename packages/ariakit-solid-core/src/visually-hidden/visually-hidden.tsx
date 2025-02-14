@@ -1,9 +1,9 @@
-import type { ValidComponent } from "solid-js";
-import { mergeProps } from "../utils/reactivity.ts";
-import { createHook, createInstance } from "../utils/system.tsx";
+import type { ElementType } from "../utils/__port.ts";
+import { $ } from "../utils/__props.ts";
+import { createElement, createHook, forwardRef } from "../utils/system.tsx";
 import type { Options, Props } from "../utils/types.ts";
 
-const TagName = "span" satisfies ValidComponent;
+const TagName = "span" satisfies ElementType;
 type TagName = typeof TagName;
 
 /**
@@ -21,22 +21,21 @@ type TagName = typeof TagName;
  */
 export const useVisuallyHidden = createHook<TagName, VisuallyHiddenOptions>(
   function useVisuallyHidden(props) {
-    props = mergeProps(
-      {
-        style: {
-          border: 0,
-          clip: "rect(0 0 0 0)",
-          height: "1px",
-          margin: "-1px",
-          overflow: "hidden",
-          padding: 0,
-          position: "absolute",
-          "white-space": "nowrap",
-          width: "1px",
-        },
-      },
-      props,
-    );
+    $(props)({
+      $style: (props) => ({
+        border: 0,
+        clip: "rect(0 0 0 0)",
+        height: "1px",
+        margin: "-1px",
+        overflow: "hidden",
+        padding: 0,
+        position: "absolute",
+        "white-space": "nowrap",
+        width: "1px",
+        // @ts-expect-error TODO [port]: [style-chain]
+        ...props.style,
+      }),
+    });
     return props;
   },
 );
@@ -52,12 +51,17 @@ export const useVisuallyHidden = createHook<TagName, VisuallyHiddenOptions>(
  * </a>
  * ```
  */
-export function VisuallyHidden(props: VisuallyHiddenProps) {
+export const VisuallyHidden = forwardRef(function VisuallyHidden(
+  props: VisuallyHiddenProps,
+) {
   const htmlProps = useVisuallyHidden(props);
-  return createInstance(TagName, htmlProps);
-}
+  return createElement(TagName, htmlProps);
+});
 
-export interface VisuallyHiddenOptions<_T extends ValidComponent = TagName>
+export interface VisuallyHiddenOptions<_T extends ElementType = TagName>
   extends Options {}
 
-export type VisuallyHiddenProps = Props<TagName, VisuallyHiddenOptions>;
+export type VisuallyHiddenProps<T extends ElementType = TagName> = Props<
+  T,
+  VisuallyHiddenOptions<T>
+>;

@@ -13,7 +13,7 @@ npm i @ariakit/solid-core
 - [Diego Haz](https://x.com/diegohaz)
 - [Ben Rodri](https://x.com/benrodrs)
 
-## Ariakit Solid maintainers
+## Ariakit Solid Maintainers
 
 - [Dani Guardiola](https://x.com/daniguardio_la)
 

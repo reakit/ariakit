@@ -1,13 +1,14 @@
-import { type ValidComponent, createMemo, useContext } from "solid-js";
-import { extractTagName } from "../utils/misc.ts";
-import { createRef, mergeProps } from "../utils/reactivity.ts";
-import { createHook, createInstance } from "../utils/system.tsx";
+import { createSignal, useContext } from "solid-js";
+import { type ElementType, useMemo } from "../utils/__port.ts";
+import { $ } from "../utils/__props.ts";
+import { useMergeRefs, useTagName } from "../utils/hooks.ts";
+import { createElement, createHook, forwardRef } from "../utils/system.tsx";
 import type { Options, Props } from "../utils/types.ts";
 import { HeadingContext } from "./heading-context.tsx";
 import type { HeadingLevels } from "./utils.ts";
 
 type HeadingElements = `h${HeadingLevels}`;
-const TagName = "h1" satisfies ValidComponent;
+const TagName = "h1" satisfies ElementType;
 type TagName = HeadingElements;
 type HTMLType = HTMLElementTagNameMap[TagName];
 
@@ -24,28 +25,27 @@ type HTMLType = HTMLElementTagNameMap[TagName];
  */
 export const useHeading = createHook<TagName, HeadingOptions>(
   function useHeading(props) {
-    const ref = createRef<HTMLType>();
-    const level = useContext(HeadingContext) || (() => 1);
+    // [port]: we use a signal instead of a ref so that `extractTagName` will
+    // take effect reactively, even though it doesn't use an effect like in the
+    // original version.
+    // TODO: investigate and document why it breaks otherwise.
+    const [ref, setRef] = createSignal<HTMLType>();
+    const level = () => useContext(HeadingContext)() || 1;
     const Element = () => `h${level()}` as const;
-    const tagName = extractTagName(ref.get);
-    const isNativeHeading = createMemo(
-      () => !!tagName() && /^h\d$/.test(tagName()!),
-    );
+    const tagName = () => useTagName(ref(), Element());
+    const isNativeHeading = useMemo(() => {
+      const $tagName = tagName();
+      return !!$tagName && /^h\d$/.test($tagName);
+    });
 
-    props = mergeProps(
-      {
-        // TODO: replace with LazyDynamic
-        render: Element(),
-        get role() {
-          return !isNativeHeading() ? "heading" : undefined;
-        },
-        get "aria-level"() {
-          return !isNativeHeading() ? level() : undefined;
-        },
-        ref: ref.set,
-      },
-      props,
-    );
+    $(props, {
+      // TODO [port]: is this optimal?
+      render: Element(),
+      $role: () => (!isNativeHeading() ? "heading" : undefined),
+      "$aria-level": () => (!isNativeHeading() ? level() : undefined),
+    })({
+      $ref: (props) => useMergeRefs(setRef, props.ref),
+    });
 
     return props;
   },
@@ -67,15 +67,15 @@ export const useHeading = createHook<TagName, HeadingOptions>(
  * </HeadingLevel>
  * ```
  */
-export const Heading = function Heading(props: HeadingProps) {
+export const Heading = forwardRef(function Heading(props: HeadingProps) {
   const htmlProps = useHeading(props);
-  return createInstance(TagName, htmlProps);
-};
+  return createElement(TagName, htmlProps);
+});
 
-export interface HeadingOptions<_T extends ValidComponent = TagName>
+export interface HeadingOptions<_T extends ElementType = TagName>
   extends Options {}
 
-export type HeadingProps<T extends ValidComponent = TagName> = Props<
+export type HeadingProps<T extends ElementType = TagName> = Props<
   T,
   HeadingOptions<T>
 >;

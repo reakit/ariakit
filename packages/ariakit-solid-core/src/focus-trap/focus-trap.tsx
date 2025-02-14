@@ -1,11 +1,11 @@
-import type { ValidComponent } from "solid-js";
-import { mergeProps } from "../utils/reactivity.ts";
-import { createHook, createInstance } from "../utils/system.tsx";
+import type { ElementType } from "../utils/__port.ts";
+import { $ } from "../utils/__props.ts";
+import { createElement, createHook, forwardRef } from "../utils/system.tsx";
 import type { Props } from "../utils/types.ts";
 import type { VisuallyHiddenOptions } from "../visually-hidden/visually-hidden.tsx";
 import { useVisuallyHidden } from "../visually-hidden/visually-hidden.tsx";
 
-const TagName = "span" satisfies ValidComponent;
+const TagName = "span" satisfies ElementType;
 type TagName = typeof TagName;
 
 /**
@@ -19,22 +19,24 @@ type TagName = typeof TagName;
  */
 export const useFocusTrap = createHook<TagName, FocusTrapOptions>(
   function useFocusTrap(props) {
-    props = mergeProps(
-      {
-        "data-focus-trap": "",
-        tabIndex: 0,
-        "aria-hidden": true,
-        style: {
-          // Prevents unintended scroll jumps.
-          position: "fixed",
-          top: 0,
-          left: 0,
-        },
-      },
-      props,
-    );
+    $(props, {
+      "data-focus-trap": "",
+      tabIndex: 0,
+      "aria-hidden": true,
+    })({
+      $style: (props) => ({
+        // Prevents unintended scroll jumps.
+        position: "fixed",
+        top: 0,
+        left: 0,
+        // TODO [port]: [style-chain]
+        // @ts-expect-error
+        ...props.style,
+      }),
+    });
 
-    props = useVisuallyHidden(props);
+    // TODO: possible to add `props =` to reduce diff noise?
+    useVisuallyHidden(props);
 
     return props;
   },
@@ -48,15 +50,15 @@ export const useFocusTrap = createHook<TagName, FocusTrapOptions>(
  * <FocusTrap onFocus={focusSomethingElse} />
  * ```
  */
-export function FocusTrap(props: FocusTrapProps) {
+export const FocusTrap = forwardRef(function FocusTrap(props: FocusTrapProps) {
   const htmlProps = useFocusTrap(props);
-  return createInstance(TagName, htmlProps);
-}
+  return createElement(TagName, htmlProps);
+});
 
-export type FocusTrapOptions<T extends ValidComponent = TagName> =
+export type FocusTrapOptions<T extends ElementType = TagName> =
   VisuallyHiddenOptions<T>;
 
-export type FocusTrapProps<T extends ValidComponent = TagName> = Props<
+export type FocusTrapProps<T extends ElementType = TagName> = Props<
   T,
   FocusTrapOptions<T>
 >;

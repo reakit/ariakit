@@ -35,7 +35,8 @@
   "dependencies": {
     "@ariakit/core": "0.4.14",
     "@solid-primitives/props": "3.1.11",
-    "@solid-primitives/utils": "6.2.3"
+    "@solid-primitives/refs": "1.1.0",
+    "@solid-primitives/utils": "6.3.0"
   },
   "peerDependencies": {
     "solid-js": "^1.8"
@@ -44,8 +45,8 @@
     "./visually-hidden/visually-hidden": "./src/visually-hidden/visually-hidden.tsx",
     "./utils/types": "./src/utils/types.ts",
     "./utils/system": "./src/utils/system.tsx",
-    "./utils/reactivity": "./src/utils/reactivity.ts",
     "./utils/misc": "./src/utils/misc.ts",
+    "./utils/hooks": "./src/utils/hooks.ts",
     "./separator/separator": "./src/separator/separator.tsx",
     "./role/role": "./src/role/role.tsx",
     "./heading/utils": "./src/heading/utils.ts",
@@ -55,8 +56,13 @@
     "./group/group": "./src/group/group.tsx",
     "./group/group-label": "./src/group/group-label.tsx",
     "./group/group-label-context": "./src/group/group-label-context.tsx",
+    "./focusable/focusable": "./src/focusable/focusable.tsx",
+    "./focusable/focusable-context": "./src/focusable/focusable-context.tsx",
+    "./focusable/focusable-container": "./src/focusable/focusable-container.tsx",
     "./focus-trap/focus-trap": "./src/focus-trap/focus-trap.tsx",
     "./focus-trap/focus-trap-region": "./src/focus-trap/focus-trap-region.tsx",
+    "./command/command": "./src/command/command.tsx",
+    "./button/button": "./src/button/button.tsx",
     "./as/as": "./src/as/as.tsx",
     "./package.json": "./package.json"
   }
