@@ -276,7 +276,10 @@ export const usePopover = createHook<TagName, PopoverOptions>(
         `${overflowPadding}px`,
       );
 
-      const anchor = getAnchorElement(anchorElement, getAnchorRectProp);
+      const anchor = getAnchorElement(
+        anchorElement ?? disclosureElement,
+        getAnchorRectProp,
+      );
 
       const updatePosition = async () => {
         if (!mounted) return;

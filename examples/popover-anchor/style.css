@@ -1,0 +1,59 @@
+@import url("../button/style.css");
+
+.button {
+  @apply
+    font-medium
+  ;
+}
+
+.popover {
+  @apply
+    z-50
+    flex
+    flex-col
+    gap-4
+    rounded-lg
+    border
+    border-solid
+    p-4
+    max-w-[min(calc(100vw-16px),320px)]
+    shadow-lg
+    dark:shadow-lg-dark
+    focus-visible:ariakit-outline
+    border-gray-250
+    bg-white
+    text-black
+    dark:border-gray-600
+    dark:bg-gray-700
+    dark:text-white
+  ;
+}
+
+.anchor {
+  @apply
+    relative
+    right-6
+    top-6
+    border
+    border-solid
+    p-2
+    border-purple-200
+  ;
+}
+
+.arrow {
+  @apply
+    [&>svg]:fill-white
+    [&>svg]:stroke-gray-250
+    [&>svg]:dark:fill-gray-700
+    [&>svg]:dark:stroke-gray-600
+  ;
+}
+
+.heading {
+  @apply
+    m-0
+    text-xl
+    font-medium
+  ;
+}

@@ -6,7 +6,6 @@ import { useEvent, useWrapElement } from "../utils/hooks.ts";
 import { createElement, createHook, forwardRef } from "../utils/system.tsx";
 import type { Props } from "../utils/types.ts";
 import type { PopoverAnchorOptions } from "./popover-anchor.tsx";
-import { usePopoverAnchor } from "./popover-anchor.tsx";
 import {
   PopoverScopedContextProvider,
   usePopoverProviderContext,
@@ -43,7 +42,6 @@ export const usePopoverDisclosure = createHook<
   const onClickProp = props.onClick;
 
   const onClick = useEvent((event: MouseEvent<HTMLType>) => {
-    store?.setAnchorElement(event.currentTarget);
     onClickProp?.(event);
   });
 
@@ -62,7 +60,6 @@ export const usePopoverDisclosure = createHook<
     onClick,
   };
 
-  props = usePopoverAnchor<TagName>({ store, ...props });
   props = useDialogDisclosure({ store, ...props });
 
   return props;
