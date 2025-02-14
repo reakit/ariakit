@@ -1,5 +1,9 @@
 # @ariakit/test
 
+## 0.4.9
+
+- Fixed a build issue that resulted in JavaScript files not being part of the released package.
+
 ## 0.4.8
 
 - Fixed the package for running in an SSR environment.
