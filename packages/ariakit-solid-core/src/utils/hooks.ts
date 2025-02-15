@@ -1,6 +1,13 @@
 import { mergeRefs } from "@solid-primitives/refs";
 import { type MaybeAccessor, access } from "@solid-primitives/utils";
-import { type JSX, createUniqueId } from "solid-js";
+import {
+  type Accessor,
+  type JSX,
+  createEffect,
+  createUniqueId,
+  on,
+  onCleanup,
+} from "solid-js";
 import type { RefObject } from "./__port.ts";
 import { $ } from "./__props.ts";
 import type { WrapInstance, WrapInstanceValue } from "./types.ts";
@@ -35,6 +42,20 @@ export function useTagName(
       ? refOrElement.current
       : refOrElement;
   return element?.tagName.toLowerCase() ?? fallback;
+}
+
+function maybeOnCleanup(fn?: (() => void) | void) {
+  if (fn) onCleanup(fn);
+}
+
+/**
+ * A `React.useEffect` that will not run on the first render.
+ */
+export function useUpdateEffect(
+  effect: () => void | (() => void),
+  deps: Accessor<readonly unknown[]>,
+) {
+  createEffect(on(deps, () => maybeOnCleanup(effect()), { defer: true }));
 }
 
 /**

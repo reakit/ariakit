@@ -45,6 +45,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./visually-hidden": "./src/visually-hidden.ts",
+    "./store": "./src/store.ts",
     "./separator": "./src/separator.ts",
     "./role": "./src/role.ts",
     "./heading": "./src/heading.ts",
@@ -52,6 +53,7 @@
     "./focusable": "./src/focusable.ts",
     "./focus-trap": "./src/focus-trap.ts",
     "./command": "./src/command.ts",
+    "./checkbox": "./src/checkbox.ts",
     "./button": "./src/button.ts",
     "./as": "./src/as.ts",
     "./package.json": "./package.json"

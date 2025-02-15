@@ -1,3 +1,4 @@
+import { hasOwnProperty } from "@ariakit/core/utils/misc";
 import type { AnyObject } from "@ariakit/core/utils/types";
 import { $PROXY, type JSX } from "solid-js";
 
@@ -97,10 +98,12 @@ function resolvePropValue(
   }: { from?: number; to?: number } = {},
 ) {
   for (let i = from; i < to; i++) {
-    const v = ensureSource(resolveSource({ sources, optionSources }, i))[
-      property
-    ];
-    if (v !== undefined) return v;
+    const source = resolveSource({ sources, optionSources }, i);
+    const v = ensureSource(source)[property];
+    const isProxy = isPropsProxy(source);
+    const hasProperty = !isProxy && source && hasOwnProperty(source, property);
+    // TODO [port]: is `removeUndefinedValues` something to account for?
+    if (hasProperty || v !== undefined) return v;
   }
   return undefined;
 }

@@ -14,6 +14,14 @@ import {
 // ----
 
 /**
+ * Creates a signal used purely to trigger updates.
+ */
+export function useForceUpdate() {
+  const [value, setValue] = createSignal([]);
+  return [value, () => setValue([])] as const;
+}
+
+/**
  * **Ariakit Solid stub.**
  *
  * In React, it creates a stable callback function. Unnecessary in Solid.

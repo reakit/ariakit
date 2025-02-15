@@ -4,6 +4,7 @@ import * as Solid from "solid-js";
 import { SVGElements, getNextElement, spread } from "solid-js/web";
 import { extractAs } from "./__as.tsx";
 import { type PropsSink, isPropsProxy, withPropsSink } from "./__props.ts";
+import type { Store } from "./store.tsx";
 import type { HTMLProps, Hook, Options, Props } from "./types.ts";
 
 /**
@@ -82,6 +83,80 @@ export function createHook<
 >(useProps: (props: PropsSink<Props<T, P>>) => HTMLProps<T, P>) {
   const useRole = (props: Props<T, P>) => withPropsSink(props, useProps);
   return useRole as Hook<T, P>;
+}
+
+type StoreProvider<T extends Store> = Solid.Component<{
+  value: Solid.Accessor<T | undefined>;
+  children?: Solid.JSX.Element;
+}>;
+
+type RenderFn = () => Solid.JSX.Element;
+
+/**
+ * Creates an Ariakit store context with hooks and provider components.
+ */
+export function createStoreContext<T extends Store>(
+  providers: StoreProvider<T>[] = [],
+  scopedProviders: StoreProvider<T>[] = [],
+) {
+  const context = Solid.createContext<Solid.Accessor<T | undefined>>(
+    () => undefined,
+  );
+  const scopedContext = Solid.createContext<Solid.Accessor<T | undefined>>(
+    () => undefined,
+  );
+
+  const useContext = () => Solid.useContext(context);
+
+  const useScopedContext = (onlyScoped = false) => {
+    const scoped = Solid.useContext(scopedContext);
+    const store = useContext();
+    if (onlyScoped) return scoped;
+    return scoped || store;
+  };
+
+  const useProviderContext = () => {
+    const scoped = Solid.useContext(scopedContext);
+    const store = useContext();
+    if (scoped && scoped === store) return;
+    return store;
+  };
+
+  const ContextProvider = (
+    props: Solid.ComponentProps<typeof context.Provider>,
+  ) => {
+    return providers.reduceRight<RenderFn>(
+      (children, Provider) => () => (
+        <Provider {...props}>{children()}</Provider>
+      ),
+      () => <context.Provider {...props} />,
+    )();
+  };
+
+  const ScopedContextProvider = (
+    props: Solid.ComponentProps<typeof scopedContext.Provider>,
+  ) => {
+    return (
+      <ContextProvider {...props}>
+        {scopedProviders.reduceRight<RenderFn>(
+          (children, Provider) => () => (
+            <Provider {...props}>{children()}</Provider>
+          ),
+          () => <scopedContext.Provider {...props} />,
+        )()}
+      </ContextProvider>
+    );
+  };
+
+  return {
+    context,
+    scopedContext,
+    useContext,
+    useScopedContext,
+    useProviderContext,
+    ContextProvider,
+    ScopedContextProvider,
+  };
 }
 
 // create dynamic
