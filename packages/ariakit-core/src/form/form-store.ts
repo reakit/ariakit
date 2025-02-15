@@ -56,35 +56,47 @@ export function get<T>(
   return get(values[key], rest, defaultValue);
 }
 
-function set<T extends FormStoreValues | unknown[]>(
-  values: T,
+export function set<T>(
+  parent: T,
   path: StringLike | string[],
   value: unknown,
 ): T {
   const [k, ...rest] = Array.isArray(path) ? path : `${path}`.split(".");
-  if (k == null) return values;
+  if (k == null) return parent;
   const key = k as keyof T;
-  const isIntegerKey = isInteger(key);
-  const nextValues = isIntegerKey ? values || [] : values || {};
-  const nestedValues = nextValues[key];
-  const result =
-    rest.length && (Array.isArray(nestedValues) || isObject(nestedValues))
-      ? set(nestedValues, rest, value)
-      : value;
-  if (isIntegerKey) {
-    const index = Number(key);
-    if (values && Array.isArray(values)) {
+
+  if (!parent || typeof parent !== "object") {
+    parent = {} as T;
+  }
+
+  if (rest.length) {
+    const children = set(parent[key], rest, value);
+    return (
+      Array.isArray(parent)
+        ? [...parent, children]
+        : {
+            ...parent,
+            [k]: children,
+          }
+    ) as T;
+  }
+
+  if (Array.isArray(parent)) {
+    if (isInteger(key)) {
+      const index = Number(key);
       return [
-        ...values.slice(0, index),
-        result,
-        ...values.slice(index + 1),
+        ...parent.slice(0, index),
+        value,
+        ...parent.slice(index + 1),
       ] as T;
     }
-    const nextValues = [] as unknown as T;
-    nextValues[index as keyof T] = result as T[keyof T];
-    return nextValues;
+    parent = {} as T;
   }
-  return { ...values, [key]: result };
+
+  return {
+    ...parent,
+    [key]: rest.length ? set(parent[key], rest, value) : value,
+  };
 }
 
 function setAll<T extends FormStoreValues, V>(values: T, value: V) {
