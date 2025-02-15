@@ -29,7 +29,7 @@ import {
 import { createElement, createHook, forwardRef } from "../utils/system.tsx";
 import type { Props } from "../utils/types.ts";
 import {
-  CompositeContextProvider,
+  CompositeScopedContextProvider,
   useCompositeProviderContext,
 } from "./composite-context.tsx";
 import type { CompositeStore, CompositeStoreItem } from "./composite-store.ts";
@@ -417,9 +417,9 @@ export const useComposite = createHook<TagName, CompositeOptions>(
     props = useWrapElement(
       props,
       (element) => (
-        <CompositeContextProvider value={store}>
+        <CompositeScopedContextProvider value={store}>
           {element}
-        </CompositeContextProvider>
+        </CompositeScopedContextProvider>
       ),
       [store],
     );

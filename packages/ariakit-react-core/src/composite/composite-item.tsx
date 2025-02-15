@@ -42,7 +42,7 @@ import type { Props } from "../utils/types.ts";
 import {
   CompositeItemContext,
   CompositeRowContext,
-  useCompositeContext,
+  useCompositeScopedContext,
 } from "./composite-context.tsx";
 import type { CompositeStore } from "./composite-store.ts";
 import {
@@ -158,7 +158,7 @@ export const useCompositeItem = createHook<TagName, CompositeItemOptions>(
     "aria-posinset": ariaPosInSetProp,
     ...props
   }) {
-    const context = useCompositeContext();
+    const context = useCompositeScopedContext();
     store = store || context;
 
     const id = useId(props.id);
