@@ -14,17 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
-      - name: Cache npm
+      - name: Cache Bun
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          path: ~/.bun/install/cache
+          key: bun-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -33,11 +33,11 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
   lint:
     name: Lint
@@ -48,10 +48,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -60,17 +60,17 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: bun run lint
 
       - name: Lint CSS
-        run: npm run lint-css
+        run: bun run lint-css
 
   typescript:
     name: Type check
@@ -81,10 +81,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -93,14 +93,14 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Type check
-        run: npm run tsc
+        run: bun run tsc
 
   build:
     name: Build packages
@@ -111,10 +111,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -123,14 +123,14 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Build
-        run: npm run build
+        run: bun run build
 
   test:
     name: Test (${{ matrix.shard }})
@@ -145,10 +145,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -157,14 +157,14 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Test
-        run: npm test -- --shard ${{ matrix.shard }}
+        run: bun run test -- --shard ${{ matrix.shard }}
 
   react17:
     name: Test React 17 (${{ matrix.shard }})
@@ -179,10 +179,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -191,17 +191,17 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Install React 17
-        run: npm run react17
+        run: bun run react17
 
       - name: Test
-        run: npm test -- --shard ${{ matrix.shard }}
+        run: bun run test -- --shard ${{ matrix.shard }}
 
   website:
     name: Build website
@@ -212,10 +212,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -224,11 +224,11 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Cache Next.js
         uses: actions/cache@v4
@@ -238,7 +238,7 @@ jobs:
           restore-keys: nextjs-
 
       - name: Build website
-        run: npm run build-website-lite
+        run: bun run build-website-lite
 
   test-chrome:
     name: Test ${{ matrix.name }}
@@ -263,10 +263,10 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -275,23 +275,23 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Cache playwright
         id: cache-playwright
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ matrix.engine }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ matrix.engine }}-${{ hashFiles('bun.lock') }}
           restore-keys: playwright-${{ matrix.engine }}-
 
       - name: Install playwright
         if: steps.cache-playwright.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps ${{ matrix.engine }}
+        run: bunx playwright install --with-deps ${{ matrix.engine }}
 
       - name: Restore website
         uses: actions/cache/restore@v4
@@ -301,7 +301,7 @@ jobs:
 
       - name: Test
         id: test
-        run: xvfb-run npm run playwright -- --project ${{ matrix.project }}
+        run: xvfb-run bun run playwright -- --project ${{ matrix.project }}
 
       - name: Upload test results to GitHub
         if: failure() && steps.test.outcome == 'failure'
@@ -325,10 +325,10 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
       - name: Cache node_modules
         uses: actions/cache/restore@v4
@@ -337,21 +337,21 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Cache playwright
         uses: actions/cache@v4
         with:
           path: ~/Library/Caches/ms-playwright
-          key: playwright-macos-${{ hashFiles('package-lock.json') }}
+          key: playwright-macos-${{ hashFiles('bun.lock') }}
           restore-keys: playwright-macos-
 
       - name: Install playwright
-        run: npx playwright install --with-deps webkit
+        run: bunx playwright install --with-deps webkit
 
       - name: Restore website
         uses: actions/cache/restore@v4
@@ -361,7 +361,7 @@ jobs:
 
       - name: Test
         id: test
-        run: npm run playwright -- --project safari --project ios
+        run: bun run playwright -- --project safari --project ios
 
       - name: Upload test results to GitHub
         if: failure() && steps.test.outcome == 'failure'

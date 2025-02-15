@@ -35,6 +35,7 @@
     },
     {
       "matchPackageNames": [
+        "@types/bun",
         "@wordpress/components",
         "cross-env",
         "cross-spawn",
@@ -43,7 +44,6 @@
         "fs-extra",
         "glob",
         "jsdom",
-        "lerna",
         "lodash-es",
         "match-sorter",
         "null-loader",

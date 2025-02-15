@@ -21,17 +21,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: .nvmrc
+          bun-version-file: ".bun-version"
 
-      - name: Cache npm
+      - name: Cache Bun
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
+          path: ~/.bun/install/cache
+          key: bun-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -40,23 +40,23 @@ jobs:
           path: |
             node_modules
             packages/*/node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ hashFiles('bun.lock') }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-audit
+        run: bun install --frozen-lockfile
 
       - name: Cache playwright
         id: cache-playwright
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-chromium-${{ hashFiles('package-lock.json') }}
+          key: playwright-chromium-${{ hashFiles('bun.lock') }}
           restore-keys: playwright-chromium-
 
       - name: Install playwright
         if: steps.cache-playwright.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        run: bunx playwright install --with-deps chromium
 
       - name: Cache Next.js
         uses: actions/cache@v4
@@ -66,11 +66,11 @@ jobs:
           restore-keys: nextjs-
 
       - name: Build website
-        run: npm run build-website-lite
+        run: bun run build-website-lite
 
       - name: Test
         id: test
-        run: xvfb-run npm run test-plus-headed
+        run: xvfb-run bun run test-plus-headed
 
       - name: Upload test results to GitHub
         if: failure() && steps.test.outcome == 'failure'
