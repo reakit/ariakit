@@ -156,7 +156,7 @@ export function useMergeRefs(...refs: Array<Ref<any> | undefined>) {
         setRef(ref, value);
       }
     };
-  }, refs);
+  }, [refs.length, ...refs]);
 }
 
 /**
@@ -269,12 +269,15 @@ export function useAttribute(
 export function useUpdateEffect(effect: EffectCallback, deps?: DependencyList) {
   const mounted = useRef(false);
 
-  useEffect(() => {
-    if (mounted.current) {
-      return effect();
-    }
-    mounted.current = true;
-  }, deps);
+  useEffect(
+    () => {
+      if (mounted.current) {
+        return effect();
+      }
+      mounted.current = true;
+    },
+    deps && [deps.length, ...deps],
+  );
 
   useEffect(
     () => () => {
@@ -293,12 +296,15 @@ export function useUpdateLayoutEffect(
 ) {
   const mounted = useRef(false);
 
-  useSafeLayoutEffect(() => {
-    if (mounted.current) {
-      return effect();
-    }
-    mounted.current = true;
-  }, deps);
+  useSafeLayoutEffect(
+    () => {
+      if (mounted.current) {
+        return effect();
+      }
+      mounted.current = true;
+    },
+    deps && [deps.length, ...deps],
+  );
 
   useSafeLayoutEffect(
     () => () => {
