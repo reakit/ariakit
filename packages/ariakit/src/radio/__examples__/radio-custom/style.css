@@ -1,0 +1,29 @@
+@import url("../radio/style.css");
+
+.radio {
+  @apply
+    w-5
+    h-5
+    rounded-full
+    flex
+    justify-center
+    items-center
+    border
+    text-blue-900
+    bg-blue-200/40
+    border-blue-600
+    dark:text-blue-100
+    dark:bg-blue-600/25
+    dark:border-blue-200/40
+  ;
+}
+
+.radio-checked {
+  @apply
+    after:[content:""]
+    after:w-2
+    after:h-2
+    after:rounded-full
+    after:bg-current
+  ;
+}
